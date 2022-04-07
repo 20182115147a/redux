@@ -2,11 +2,14 @@ import React from 'react'
 import {useSelector} from 'react-redux'
 import { useDispatch } from 'react-redux'
 import { postDelete } from './postsSlice'
+import { Link } from 'react-router-dom'
+import {PostAuthor} from './PostAuthor'
 export function PostsList (){
     const posts = useSelector(state => state.posts)
     const jsonPosts = JSON.stringify(posts)
     localStorage.setItem('posts',jsonPosts)
     const dispatch = useDispatch()
+    
     
     const renderPosts = posts.map((post,index) => (
         <article className="post-excerpt" key={post.id} id ={post.id}>
@@ -14,6 +17,8 @@ export function PostsList (){
             <p className="post-content">{post.content.substring(0, 100)} <span style={{marginLeft:200} } id={index} onClick = {()=> {
                 dispatch(postDelete(index))
             }}>&times;</span></p>
+            <PostAuthor userId={post.userId}/>
+            <Link to={`/posts/${post.id}`}>View Post</Link>
         </article>
     ))
     return (
